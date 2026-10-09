@@ -1,0 +1,442 @@
+/* ==========================================================================
+   Modern Glassmorphism Calculator Design System
+   Designed by Sameen
+   ========================================================================== */
+
+:root {
+    --bg-card: rgba(18, 23, 38, 0.82);
+    --bg-display: rgba(10, 13, 24, 0.75);
+    
+    --btn-num-bg: rgba(255, 255, 255, 0.08);
+    --btn-num-hover: rgba(255, 255, 255, 0.16);
+    --btn-num-color: #f8fafc;
+
+    --btn-action-bg: rgba(148, 163, 184, 0.16);
+    --btn-action-hover: rgba(148, 163, 184, 0.28);
+    --btn-action-color: #e2e8f0;
+
+    --btn-sci-bg: rgba(56, 189, 248, 0.1);
+    --btn-sci-hover: rgba(56, 189, 248, 0.22);
+    --btn-sci-border: rgba(56, 189, 248, 0.25);
+    --btn-sci-color: #7dd3fc;
+
+    --btn-op-gradient: linear-gradient(135deg, #fb923c, #ea580c);
+    --btn-op-hover: linear-gradient(135deg, #fdba74, #f97316);
+    --btn-op-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+
+    --btn-eq-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+    --btn-eq-hover: linear-gradient(135deg, #818cf8, #c084fc);
+    --btn-eq-shadow: 0 4px 18px rgba(168, 85, 247, 0.45);
+
+    --border-glass: rgba(255, 255, 255, 0.12);
+    --border-glass-light: rgba(255, 255, 255, 0.06);
+    --shadow-main: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+    --radius-card: 26px;
+    --radius-btn: 16px;
+    --radius-inner: 18px;
+}
+
+/* Base Reset & Full Page Layout */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100dvh;
+    width: 100%;
+    font-family: var(--font-ui);
+    color: #f8fafc;
+    background: 
+        linear-gradient(rgba(9, 12, 22, 0.68), rgba(9, 12, 22, 0.82)),
+        url('Bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem 1rem;
+    overflow-x: hidden;
+}
+
+/* Calculator Outer App Container */
+.calculator-app {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Glassmorphism Calculator Card */
+.calculator-card {
+    width: 100%;
+    max-width: 410px;
+    background: var(--bg-card);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-main);
+    padding: 22px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    user-select: none;
+}
+
+/* Expanded width when in Scientific Mode */
+.calculator-card.scientific-active {
+    max-width: 520px;
+}
+
+/* Header with Brand & Controls */
+.calculator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 2px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #f1f5f9;
+}
+
+.brand-icon {
+    font-size: 1.15rem;
+    color: #fb923c;
+    filter: drop-shadow(0 0 6px rgba(251, 146, 60, 0.6));
+}
+
+.brand-name .accent {
+    background: linear-gradient(135deg, #fb923c, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-left: 2px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Header Pill Buttons */
+.pill-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-glass);
+    border-radius: 9999px;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-ui);
+    padding: 6px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.pill-btn.active {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.6);
+    color: #a5b4fc;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.35);
+}
+
+/* Display Screen */
+.display-container {
+    background: var(--bg-display);
+    border: 1px solid var(--border-glass-light);
+    border-radius: var(--radius-inner);
+    padding: 16px 18px 12px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 104px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.display-container:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.history-display {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: #94a3b8;
+    text-align: right;
+    min-height: 1.35rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    letter-spacing: 0.02em;
+}
+
+.primary-display-row {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+}
+
+.primary-display {
+    font-family: var(--font-mono);
+    font-size: 2.45rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: #f8fafc;
+    text-align: right;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    word-break: normal;
+    letter-spacing: -0.01em;
+}
+
+.primary-display::-webkit-scrollbar {
+    display: none;
+}
+
+/* Copy notification toast */
+.copy-badge {
+    position: absolute;
+    top: -26px;
+    left: 10px;
+    background: rgba(34, 197, 94, 0.9);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+}
+
+.copy-badge.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Keypad Section */
+.keypad-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Scientific Panel */
+.scientific-panel {
+    display: none;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding-bottom: 2px;
+}
+
+.calculator-card.scientific-active .scientific-panel {
+    display: grid;
+    animation: fadeIn 0.25s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Standard Keypad Grid */
+.standard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+/* Universal Button Styles */
+.btn {
+    border: 1px solid var(--border-glass-light);
+    border-radius: var(--radius-btn);
+    font-family: var(--font-ui);
+    font-size: 1.25rem;
+    font-weight: 500;
+    height: 58px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active, .btn.btn-active {
+    transform: scale(0.94);
+}
+
+.btn:focus-visible {
+    outline: 2px solid #a5b4fc;
+    outline-offset: 2px;
+}
+
+/* Number Buttons */
+.btn-num {
+    background: var(--btn-num-bg);
+    color: var(--btn-num-color);
+}
+
+.btn-num:hover {
+    background: var(--btn-num-hover);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Action Buttons (AC, Backspace, %, ±) */
+.btn-action {
+    background: var(--btn-action-bg);
+    color: var(--btn-action-color);
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+
+.btn-action:hover {
+    background: var(--btn-action-hover);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+/* Operator Buttons (+, -, ×, ÷) */
+.btn-operator {
+    background: var(--btn-op-gradient);
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: var(--btn-op-shadow);
+}
+
+.btn-operator:hover {
+    background: var(--btn-op-hover);
+    box-shadow: 0 6px 18px rgba(234, 88, 12, 0.5);
+}
+
+.btn-operator.op-active {
+    box-shadow: 0 0 0 2px #ffffff, var(--btn-op-shadow);
+}
+
+/* Equals Button (=) */
+.btn-equals {
+    background: var(--btn-eq-gradient);
+    color: #ffffff;
+    font-size: 1.45rem;
+    font-weight: 600;
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: var(--btn-eq-shadow);
+}
+
+.btn-equals:hover {
+    background: var(--btn-eq-hover);
+    box-shadow: 0 6px 22px rgba(168, 85, 247, 0.6);
+}
+
+/* Scientific Buttons */
+.btn-sci {
+    background: var(--btn-sci-bg);
+    border-color: var(--btn-sci-border);
+    color: var(--btn-sci-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+    height: 44px;
+    border-radius: 12px;
+}
+
+.btn-sci:hover {
+    background: var(--btn-sci-hover);
+    color: #ffffff;
+    border-color: rgba(56, 189, 248, 0.45);
+}
+
+/* Footer Section */
+.calculator-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 6px;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    border-top: 1px solid var(--border-glass-light);
+}
+
+.calculator-footer strong {
+    color: #e2e8f0;
+}
+
+.shortcut-tip {
+    font-size: 0.75rem;
+    color: #64748b;
+    letter-spacing: 0.02em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    body {
+        padding: 0.75rem;
+    }
+
+    .calculator-card {
+        padding: 16px 14px 14px;
+        gap: 12px;
+        border-radius: 20px;
+    }
+
+    .calculator-card.scientific-active {
+        max-width: 100%;
+    }
+
+    .primary-display {
+        font-size: 2.1rem;
+    }
+
+    .btn {
+        height: 52px;
+        font-size: 1.15rem;
+        border-radius: 13px;
+    }
+
+    .btn-sci {
+        height: 38px;
+        font-size: 0.85rem;
+    }
+
+    .shortcut-tip {
+        display: none;
+    }
+}

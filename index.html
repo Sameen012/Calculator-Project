@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Designed by Sameen -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Scientific Calculator | By Sameen</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles and Scripts -->
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="calculator-app">
+        <!-- Main Calculator Container -->
+        <main class="calculator-card" role="region" aria-label="Calculator">
+            
+            <!-- Header bar with Title and Mode Toggles -->
+            <header class="calculator-header">
+                <div class="brand">
+                    <span class="brand-icon">⚡</span>
+                    <span class="brand-name">CALC<span class="accent">PRO</span></span>
+                </div>
+                
+                <div class="header-controls">
+                    <!-- Angle unit toggle (DEG / RAD) -->
+                    <button type="button" class="pill-btn angle-toggle" id="angleModeBtn" title="Toggle Degrees / Radians">
+                        DEG
+                    </button>
+                    <!-- Mode switch (Standard / Scientific) -->
+                    <button type="button" class="pill-btn mode-toggle" id="calcModeBtn" title="Toggle Scientific Mode">
+                        <span class="mode-icon">🧪</span>
+                        <span class="mode-text">Sci</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Display Area -->
+            <section class="display-container" id="displayWrapper" title="Click to copy result">
+                <div class="history-display" id="historyDisplay" aria-live="polite"></div>
+                <div class="primary-display-row">
+                    <div class="primary-display" id="primaryDisplay" aria-live="polite">0</div>
+                    <span class="copy-badge" id="copyBadge">Copied!</span>
+                </div>
+            </section>
+
+            <!-- Keypad Area -->
+            <section class="keypad-container" id="keypad">
+                
+                <!-- Scientific Panel (Can be shown or hidden based on mode) -->
+                <div class="scientific-panel" id="scientificPanel">
+                    <button type="button" class="btn btn-sci" data-action="sin" title="Sine">sin</button>
+                    <button type="button" class="btn btn-sci" data-action="cos" title="Cosine">cos</button>
+                    <button type="button" class="btn btn-sci" data-action="tan" title="Tangent">tan</button>
+                    <button type="button" class="btn btn-sci" data-action="pi" title="Pi (&pi;)">&#960;</button>
+                    <button type="button" class="btn btn-sci" data-action="e" title="Euler's Number (e)">e</button>
+
+                    <button type="button" class="btn btn-sci" data-action="ln" title="Natural Logarithm (ln)">ln</button>
+                    <button type="button" class="btn btn-sci" data-action="log" title="Logarithm base 10 (log)">log</button>
+                    <button type="button" class="btn btn-sci" data-action="square" title="Square (x&#178;)">x&#178;</button>
+                    <button type="button" class="btn btn-sci" data-action="power" title="Power (x&#696;)">x&#696;</button>
+                    <button type="button" class="btn btn-sci" data-action="sqrt" title="Square Root (&radic;)">&#8730;</button>
+
+                    <button type="button" class="btn btn-sci" data-action="factorial" title="Factorial (n!)">n!</button>
+                    <button type="button" class="btn btn-sci" data-action="inverse" title="Reciprocal (1/x)">1/x</button>
+                    <button type="button" class="btn btn-sci" data-action="openParen" title="Open Parenthesis">(</button>
+                    <button type="button" class="btn btn-sci" data-action="closeParen" title="Close Parenthesis">)</button>
+                    <button type="button" class="btn btn-sci" data-action="exp" title="Exponential (e&#739;)">e&#739;</button>
+                </div>
+
+                <!-- Main Standard Keypad Grid -->
+                <div class="standard-grid">
+                    <!-- Row 1: Actions & Division -->
+                    <button type="button" class="btn btn-action" data-action="clear" title="All Clear (Esc)">AC</button>
+                    <button type="button" class="btn btn-action" data-action="delete" title="Backspace (⌫)">&#9003;</button>
+                    <button type="button" class="btn btn-action" data-action="percent" title="Percentage (%)">%</button>
+                    <button type="button" class="btn btn-operator" data-action="operator" data-value="/" title="Divide (/)">&divide;</button>
+
+                    <!-- Row 2: 7, 8, 9, Multiplication -->
+                    <button type="button" class="btn btn-num" data-num="7">7</button>
+                    <button type="button" class="btn btn-num" data-num="8">8</button>
+                    <button type="button" class="btn btn-num" data-num="9">9</button>
+                    <button type="button" class="btn btn-operator" data-action="operator" data-value="*" title="Multiply (*)">&#215;</button>
+
+                    <!-- Row 3: 4, 5, 6, Subtraction -->
+                    <button type="button" class="btn btn-num" data-num="4">4</button>
+                    <button type="button" class="btn btn-num" data-num="5">5</button>
+                    <button type="button" class="btn btn-num" data-num="6">6</button>
+                    <button type="button" class="btn btn-operator" data-action="operator" data-value="-" title="Subtract (-)">&#8722;</button>
+
+                    <!-- Row 4: 1, 2, 3, Addition -->
+                    <button type="button" class="btn btn-num" data-num="1">1</button>
+                    <button type="button" class="btn btn-num" data-num="2">2</button>
+                    <button type="button" class="btn btn-num" data-num="3">3</button>
+                    <button type="button" class="btn btn-operator" data-action="operator" data-value="+" title="Add (+)">+</button>
+
+                    <!-- Row 5: ±, 0, Decimal, Equals -->
+                    <button type="button" class="btn btn-action" data-action="negate" title="Negate sign (&plusmn;)">&plusmn;</button>
+                    <button type="button" class="btn btn-num" data-num="0">0</button>
+                    <button type="button" class="btn btn-num" data-action="decimal" data-value=".">.</button>
+                    <button type="button" class="btn btn-equals" data-action="equals" title="Calculate (Enter)">=</button>
+                </div>
+            </section>
+
+            <!-- Footer Attribution -->
+            <footer class="calculator-footer">
+                <span>&copy; Powered by <strong>Sameen</strong></span>
+                <span class="shortcut-tip" title="Use numbers, operators, Enter, Backspace, or Esc on your keyboard">&#9000; Keyboard Supported</span>
+            </footer>
+
+        </main>
+    </div>
+</body>
+</html>
